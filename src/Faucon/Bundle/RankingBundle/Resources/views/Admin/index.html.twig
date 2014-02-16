@@ -1,0 +1,13 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>{{ 'admin.page.header'|trans }}</h1>
+<p>
+{{ 'admin.page.body'|trans }}
+</p>
+<ul>
+    <li><a href="{{ path('admin_challenge') }}">{{ 'admin.page.link.to.administrate.challenges'|trans }}</a></li>
+    <li><a href="{{ path('admin_challenge_new') }}">{{ 'admin.challenge.create.new.challenge'|trans }}</a></li>
+    <li><a href="{{ path('admin_user') }}">{{ 'admin.page.link.to.user.overview'|trans }}</a></li>
+</ul>
+{% endblock %}

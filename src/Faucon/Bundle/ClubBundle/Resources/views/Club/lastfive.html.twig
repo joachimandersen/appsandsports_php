@@ -1,0 +1,12 @@
+<dl>
+    {% for entity in entities %}
+        <dt>
+            <a href="{{ path('club_show', {'id': entity.id })}}">
+                {{ entity.name }}
+            </a>
+        </dt>
+        <dd>
+             {{ 'club.lastfive.Added'|trans }} {{ dateutil.ago(entity.created|date('Y-m-d H:i:s')) }}
+        </dd>
+    {% endfor %}
+</dl>

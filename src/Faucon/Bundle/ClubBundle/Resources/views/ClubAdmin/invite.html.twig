@@ -1,0 +1,77 @@
+{% extends '::ranking.base.html.twig' %}
+{% block applicationname %} {{ 'application.name.default'|trans }} {% endblock %}
+{% block hero %} 
+{% endblock %}
+{% block body %}
+<h1>{{ 'admin.club.invitation.header'|trans }}</h1>
+<div class="row-fluid" id="js_email_list_editor">
+    <div class="span5">
+        <div>
+            <div>
+                <form class="well form-search">
+                <label for="email_field">{{ 'admin.club.invitation.label'|trans }}:</label>
+                <input type="text" id="email_field" class="js_email_input" />
+                <button class="btn btn-primary js_email_add_button">{{ 'admin.club.invitation.email.add'|trans }}</button>
+                </form>
+            </div>
+            <div>
+                <button class="btn js_email_send_button">{{ 'admin.club.invitation.email.send'|trans }}</button>
+                <a href="{{ path('club_admin_show', {'id': club.id}) }}" class="btn">{{ 'admin.club.invitation.cancel'|trans }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="span5">
+        <h3>{{ 'admin.club.invitation.send.to'|trans }}</h3>
+        <div class="js_email_selection">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+jQuery(document).ready(function() {
+    jQuery('#js_email_list_editor').listeditor({
+        inputselector: '.js_email_input',
+        listselector: '.js_email_selection',
+        addbuttonselector: '.js_email_add_button'
+    });
+    jQuery('.js_email_send_button').attr('disabled', 'disabled');
+    jQuery(document).bind('listeditor:emails', function(e, data) {
+        var button = jQuery('.js_email_send_button');
+        button.data('emails', data.emails);
+        if (data.emails.length === 0) {
+            button.attr('disabled', 'disabled');
+        }
+        else {
+            button.removeAttr('disabled');
+        }
+    });
+    jQuery('.js_email_send_button').click(function() {
+        jQuery.ajax({
+            type: 'POST',
+            url: '{{ path('club_admin_send_invite', {'id': club.id}) }}',
+            data: JSON.stringify({emails: jQuery(this).data('emails')}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (msg) {
+                jQuery('#js_confirm_modal').modal('hide');
+                if (msg.status == 'ok') {
+                    jQuery.faucon.showSuccessDialog(
+                        '{{ 'admin.club.inivtations.sent.with.success.header'|trans }}',
+                        '{{ 'admin.club.inivtations.sent.with.success.message'|trans }}',
+                        2000
+                    );
+                    jQuery('#js_email_list_editor').listeditor('clear');
+                }
+            },
+            error: function (req, status, ex) {
+                jQuery('#js_confirm_modal').modal('hide');
+                jQuery.faucon.showSuccessDialog(
+                    '{{ 'admin.club.inivtations.sent.with.error.header'|trans }}',
+                    '{{ 'admin.club.inivtations.sent.with.error.message'|trans }}',
+                    2000
+                );
+            }
+        });
+    });
+});
+{% endblock %}

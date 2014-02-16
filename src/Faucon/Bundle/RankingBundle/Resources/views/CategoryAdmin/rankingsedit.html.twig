@@ -1,0 +1,37 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block hero %}
+<h1>Category edit</h1>
+{% endblock %}
+{% block body %}
+
+<div id="js_ranking_sorter">
+    <ul id="sortable">
+    </ul>
+    <div>
+        <button id="js_rankings_save" class="btn btn-primary">{{ 'category.edit.rankings.save'|trans }}</button>
+        <a href="{{ path('category_admin_edit', { 'id': entity.id }) }}" class="btn">{{ 'category.edit.rankings.cancel'|trans }}</a>
+    </div>
+</div>
+{% endblock %}
+{% block category %}
+{{ category }}
+{% endblock %}
+{% block javascript %}
+    var rankings = [];
+    {% for ranking in rankings %}
+        rankings.push({{'{'}} id: {{ranking.id}}, ranking: {{ ranking.ranking }}, name: '{{ranking.player}}'{{'}'}});
+    {% endfor %}
+    jQuery(document).ready(function() {
+        jQuery('#js_ranking_sorter').rankingsorter({
+            rankings: rankings,
+            saverankingorderurl: '{{ path('category_admin_update_rankings', { 'id': entity.id }) }}?XDEBUG_SESSION_START=netbeans-xdebug',
+            savebuttonselector: '#js_rankings_save',
+            displaysuccesscallback: jQuery.faucon.showSuccessDialog,
+            successheader: '{{ 'ranking.order.saved.with.success.header'|trans }}',
+            successmessage: '{{ 'ranking.order.saved.with.success.message'|trans }}',
+            errorheader: '{{ 'ranking.order.saved.with.error.header'|trans }}',
+            errormessage: '{{ 'ranking.order.saved.with.error.message'|trans }}'
+        });
+    });
+{% endblock %}

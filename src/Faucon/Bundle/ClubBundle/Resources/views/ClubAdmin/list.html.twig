@@ -1,0 +1,10 @@
+{% extends '::ranking.base.html.twig' %}
+{% block applicationname %} {{ 'application.name.default'|trans }} {% endblock %}
+{% block body %}
+<h1>{{ 'admin.club.my.clubs'|trans }}</h1>
+    <ul>
+    {% for club in clubs%}
+        <li><a href="{{ path('club_admin_show', { 'id' : club.id }) }}">{{ club.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

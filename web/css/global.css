@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -182px; /* the bottom margin is the negative value of the footer's height */
+}
+.container {
+    text-align: left;    
+}
+footer, .push {
+    height: 182px; /* .push must be the same height as .footer */
+}
+footer {
+    background-color: #303030;
+    color: #CACACA;
+    padding-top: 25px;
+}
+.winner {
+    font-weight: bold;
+}
+.loser {
+    color:#868686;
+}
+.license {
+    border: 1px solid #00aa00 !important;
+    color: #00aa00 !important;
+}
+.license a {
+    color: #00aa00 !important;
+    font-weight: bold;
+}
+input.error { border: 1px dashed red !important;}
+.ui-autocomplete { overflow-y: auto; width:300px; }
+* html .ui-autocomplete { /* IE max- */height: expression( this.scrollHeight > 320 ? "320px" : "auto" ); }
+.ui-autocomplete { max-height: 320px; }
+.ui-autocomplete li { font-size:10pt; }
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+#sortable li span.icon { position: absolute; margin-left: -1.3em; }
+#selectable .ui-selecting { background: #FECA40; }
+#selectable .ui-selected { background: #F39814; color: white; }
+#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }

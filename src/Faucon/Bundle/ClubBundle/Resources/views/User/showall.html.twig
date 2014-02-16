@@ -1,0 +1,56 @@
+{% extends '::ranking.base.html.twig' %}
+
+ {% block body %}
+<h1>Mine åbne udfordringer</h1>
+
+<p>
+Her kan du se alle åbne udfordringer, både dem du selv har oprettet, men også 
+dem hvor du er den udfordrede. Husk at kampe skal afvikles inden 14 dage, ellers
+bliver udfordringen ugyldig. Husk også at det altid er udfordren der har ansvar 
+for at indberette resultatet. Sørg for at blive "enige" om resultatet når kampen
+er færdig.
+</p>
+
+{% if any > 0 %}
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            Udfordrer (Rangering ved udfordring)
+        </th>
+        <th>
+            Modstander (Rangering ved udfordring)
+        </th>
+        <th>
+            Oprettet
+        </th>
+        <th>
+            
+        </th>
+    </tr>
+    {% for challenge in challenges %}
+    <tr>
+        <td>
+            {{ challenge.challenger }} ({{ challenge.challengerrank }})
+        </td>
+        <td>
+            {{ challenge.challenged }} ({{ challenge.challengedrank }})
+        </td>
+        <td>
+            {{ challenge.created|date('Y-m-d H:i:s') }}
+        </td>
+        <td>
+            {% if app.user != null and app.user.id == challenge.challenger.id  %}
+            <a href="{{ path('game_new', { 'userid': entity.getId(), 'challengeid': challenge.getId() }) }}">
+                Indberet resultat
+            </a>
+            {% else %}
+            -
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Du har ingen åbne udfordringer!</p>
+{% endif %}
+{% endblock %}

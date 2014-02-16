@@ -1,0 +1,49 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block hero %}
+<h1>{{ category.name }} Rangliste</h1>
+{% endblock %}
+{% block body %}
+{% if count > 0 %}
+<div class="pyramidwrapper">
+  {% for key, rankings in data %}
+      {% for ranking in rankings %}
+        {% if ranking['hasLicense'] == 1 %}
+        <div class="pyramid license" rel="tooltip" title="Licensspiller">
+        {% else %}
+        <div class="pyramid">
+        {% endif %}
+          {% if ranking['canChallenge'] %}
+          <a href="{{ path('challenge_new', { 'id': ranking['ranking'].getPlayer().getId(), 'categoryid': category.getId() }) }}">
+          {% elseif authenticated != true and ranking['ranking'] != null %}
+          <a href="{{ path('user_show', { 'id': ranking['ranking'].getPlayer().getId(), 'categoryid': category.getId() }) }}">
+          {% endif %}
+            {% if ranking['ranking'] != null %}
+            {{ ranking['ranking'].getRanking() }}
+            {{ ranking['ranking'].getPlayer() }}
+            {% else %}
+            &nbsp;
+            {% endif %}
+          {% if ranking['canChallenge'] or authenticated != true %}
+          </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    <br clear="all" />
+  {% endfor %}
+</div>
+{% else %}
+Ingen
+{% endif %}
+
+ {% endblock %}
+
+{% block teasers %}
+    {% include '::ranking.teaser.category.html.twig' with {'category': category} %}
+{% endblock%}
+
+{% block javascript %}
+    jQuery(document).ready(function() {
+        jQuery('.pyramidwrapper').pyramidefitter({});
+    });
+{% endblock %}

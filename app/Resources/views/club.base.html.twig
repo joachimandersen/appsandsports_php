@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+
+{% block navigation %}
+    {% include '::navigation.base.html.twig' %}
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        {% block teasers %}{% endblock %}
+    </div> <!-- /container -->
+{% endblock %}
+
+{% block teaser1 %}
+    <h2>5 sidste klubber</h2>
+    {% render 'FauconClubBundle:Club:lastfive' %}
+    <p><a class="btn" href="{{ path('club') }}">Se alle &raquo;</a></p>
+{% endblock%}
+
+{% block teaser2 %}
+{% endblock%}
+
+{% block teaser3 %}
+{% endblock%}

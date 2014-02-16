@@ -1,0 +1,16 @@
+<dl>
+    {% for entity in entities %}
+        <dt>
+            {{ dateutil.ago(entity.created|date('Y-m-d H:i:s')) }}
+        </dt>
+        <dd>
+            {% if entity.game != null %}
+            <a href="{{ path('game_show', { 'id': entity.game.id }) }}">
+            {% endif %}
+            {{ entity.challenger }} vs {{ entity.challenged }}
+            {% if entity.game != null %}
+            </a>
+            {% endif %}
+        </dd>
+    {% endfor %}
+</dl>

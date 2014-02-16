@@ -1,0 +1,17 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block hero %}
+<h1>{{ 'admin.category.create.new'|trans }}</h1>
+{% endblock %}
+{% block body %}
+
+<form action="{{ path('admin_category_create', { 'id': clubid }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+<p>
+    <button type="submit" class="btn">{{ 'admin.category.create.new'|trans }} &raquo;</button>
+</p>
+</form>
+{% endblock %}
+{% block category %}
+{{ category }}
+{% endblock %}

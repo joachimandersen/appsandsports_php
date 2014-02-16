@@ -1,0 +1,93 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Kampindberetning</h1>
+
+<form action="{{ path('game_create', { 'userid': user.getId(), 'challengeid': challenge.getId() }) }}" method="post" {{ form_enctype(form) }} id="js_matchform">
+<table>
+    <tr>
+        <td>
+            Kampresume
+        </td>
+        <td>
+            {{ form_errors(form.description) }}
+            {{ form_widget(form.description) }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Kampdato
+        </td>
+        <td>
+            {{ form_errors(form.played) }}
+            {{ form_widget(form.played) }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Kampstatus
+        </td>
+        <td>
+            <select name="faucon_bundle_rankingbundle_gametype_notfinished" id="faucon_bundle_rankingbundle_gametype_notfinished">
+            {% for key, status in statuses %}
+                <option value="{{ status }}">{{ key }}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="sets">
+                <table id="js_matchscore">
+                    <thead>
+                        <tr>
+                            <th>
+                                Sæt
+                            </th>
+                            <th class="challenger">
+                                {{ user }}
+                            </th>
+                            <th class="challenged">
+                                {{ challenge.getChallenged() }}
+                            </th>
+                            <th>
+                                <input type="hidden" name="faucon_bundle_rankingbundle_gametype_score" id="faucon_bundle_rankingbundle_gametype_score" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                        
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+{{ form_rest(form) }}
+</form>
+{% endblock %}
+
+{% block javascript %}
+    jQuery(document).ready(function() {
+        jQuery('#js_matchscore').matchscore({
+            numberofsetspermatch: {{ numberofsetspermatch }},
+            resultcontainerselector: 'input#faucon_bundle_rankingbundle_gametype_score',
+            validator: function(initialScore) {
+                jQuery('#js_matchscore').scorevalidator({
+                    numberofpointstowinset: {{ numberofpointstowinset }},
+                    setstowin: {{ setstowin }},
+                    validiconsrc: '{{ asset('img/check.png') }}',
+                    invalidiconsrc: '{{ asset('img/no.png') }}',
+                    initialScore: initialScore
+                });
+            },
+            challengerselector: 'th.challenger',
+            challengedselector: 'th.challenged',
+            initialScore: [{% if initialscore != null %}{% for set in initialscore %} { 'away': {{ set.away }}, 'home': {{ set.home}} } {% if not loop.last %},{% endif %} {% endfor %}{% endif %}]
+        });
+    });
+{% endblock %}

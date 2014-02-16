@@ -1,0 +1,41 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>{{ entity.challenge.challenger }} vs {{ entity.challenge.challenged }}</h1>
+<div class="span5">
+    <h2>Resultat</h2>
+    <p>
+    Kampen mellem {{ entity.challenge.challenger }} og {{ entity.challenge.challenged }} 
+    blev spillet for {{ dateutil.ago(entity.played|date('Y-m-d H:i:s')) }} og endte med at {{ entity.getWinner() }} 
+    vandt.
+    </p>
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <td class="{{ winner == entity.challenge.challenger ? 'winner' : 'loser' }}">
+                {{ entity.challenge.challenger }}
+            </td>
+            {% for i in 0..home|length-1 %}
+            <td class="{{ setwinner[i] ? 'winner' : 'loser' }}">
+                {{ home[i] }}
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td class="{{ winner == entity.challenge.challenged ? 'winner' : 'loser' }}">
+                {{ entity.challenge.challenged }}
+            </td>
+            {% for i in 0..away|length-1 %}
+            <td class="{{ setwinner[i] ? 'loser' : 'winner' }}">
+                {{ away[i] }}
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+<div class="span5">
+    <h2>Kampresume</h2>
+    <p>
+    {{ entity.description }}
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Send udfordring til {{ challenged }}</h1>
+
+<form action="{{ path('challenge_create', { 'id': challenged.id, 'categoryid': category.id }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+<p>
+Du er ved at oprette en udfordring. Husk at du kun kan have en åben udfordring 
+pr kategori og at kampen skal spilles inde der er gået 14 dage. Husk også at det 
+er dig som udfordrer, der har ansvaret for at indrapportere resultatet. Der er 
+pt ingen godkendelsesprocess forbundet med at indrapportere så sørg for at
+dobbelttjekke at din indberetning er rigtig!
+</p>
+<p>
+Når du klikker på "Send udfordring" oprettes udfordringen i systemet og der
+sendes en mail til {{ challenged }}.
+</p>
+<p>
+    <button type="submit" class="btn">Send udfordring &raquo;</button>
+</p>
+</form>
+{% endblock %}
+{% block category %}
+{{ category }}
+{% endblock %}

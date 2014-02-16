@@ -1,0 +1,72 @@
+{% extends '::sport.base.html.twig' %}
+{% block applicationname %} {{ 'application.name.default'|trans }} {% endblock %}
+{% block body %}
+
+<div class="row">
+<div id="myCarousel" class="offset2 span8 carousel slide">
+    <div class="carousel-inner">
+        <div class="item active">
+        <img src="img/slide1.png" alt="">
+        <div class="carousel-caption">
+            <h4>Inviter spillere</h4>
+            <p>Invitér klubbens spillere til og tilføj dem efterfølgende til de relevante ranglister</p>
+        </div>
+        </div>
+        <div class="item">
+        <img src="img/slide2.png" alt="">
+        <div class="carousel-caption">
+            <h4>Ranglistekategorier</h4>
+            <p>Det er muligt at oprette et vilkårligt antal ranglister, det er op til dig</p>
+        </div>
+        </div>
+        <div class="item">
+        <img src="img/slide3.png" alt="">
+        <div class="carousel-caption">
+            <h4>Ranglister</h4>
+            <p>Ranglisten er bygget op som en pyramide der gør det muligt at avancere hurgtigt</p>
+        </div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+</div>
+</div>
+<h1>{{ 'application.header'|trans }}</h1>
+<p>
+{{ 'application.teaser'|trans|raw }}
+</p>
+<p>
+{{ 'application.disclaimer'|trans|raw }}
+</p>
+<div>
+    <dl>
+        <dt>
+            <a href="{{ path('ranking') }}" title="{{ 'application.ranking.title'|trans }}">
+                {{ 'application.ranking.title'|trans }}
+            </a>
+        </dt>
+        <dd>
+            {{ 'application.ranking.description'|trans }}
+        </dd>
+    </dl>
+</div>
+{% endblock %}
+
+{% block teasers %}
+<div class="row">
+    <div class="span4">
+        <h2>{{ 'application.signup.header'|trans }}</h2>
+        <p>
+            {{ 'application.signup.text'|trans }}
+        </p>
+        <a href="">{{ 'application.signup.link.text'|trans }}</a>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+jQuery(document).ready(function() {
+    jQuery('.carousel').carousel({
+        interval: 4000
+    });
+});
+{% endblock %}

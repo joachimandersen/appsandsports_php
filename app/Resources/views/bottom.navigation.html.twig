@@ -1,0 +1,25 @@
+<div class="span3">
+    <ul class="unstyled">
+        <li>
+            <a class="brand" href="{{ path('sports_index') }}">BETA Sports&amp;Apps</a>
+        </li>
+        <li>
+            <a href="{{ path('club') }}">{{ 'club.list.menu.title'|trans }}</a>
+        </li>
+        {% if app.user == null %}
+        <li>
+            <a href="{{ path('club_wizard') }}">{{ 'club.wizard.menu.title'|trans }}</a>
+        </li>
+        {% endif %}
+        {% if is_granted('ROLE_CLUB_ADMIN') %}
+        <li>
+            <a href="{{ path('club_admin_list') }}">{{ 'admin.club.menu.title'|trans }}</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="span3">
+    <ul class="unstyled">
+        <li><a href="{{ path('ranking') }}">Ranglisteapp</a></li>
+    </ul>
+</div>

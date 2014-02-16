@@ -1,0 +1,22 @@
+<dl>
+    {% for entity in entities %}
+        <dt>
+            <a href="{{ path('user_show', {'id': entity.challenge.challenger.id, 'categoryid': entity.challenge.category.id })}}">
+                {{ entity.challenge.challenger }}
+            </a>
+            vs
+            <a href="{{ path('user_show', {'id': entity.challenge.challenged.id, 'categoryid': entity.challenge.category.id })}}">
+                {{ entity.challenge.challenged }}
+            </a>
+            for {{ dateutil.ago(entity.played|date('Y-m-d H:i:s')) }}
+        </dt>
+        <dd>
+            {% if entity.winner.id == entity.challenge.challenger.id %}
+            {{ entity.challenge.challenger }} vandt over {{ entity.challenge.challenged }}
+            {% else %}
+            {{ entity.challenge.challenged }} vandt over {{ entity.challenge.challenger }}
+            {% endif %}
+            med {{ entity.score }}
+        </dd>
+    {% endfor %}
+</dl>

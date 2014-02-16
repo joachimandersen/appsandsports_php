@@ -1,0 +1,48 @@
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <ul class="nav primary pull-left">
+                <li{% if app.request.get('_route') == 'club' %} class="active"{% endif %}><a href="{{ path('club') }}">{{ 'club.list.menu.title'|trans }}</a></li>
+                {% if app.user == null %}
+                <li{% if app.request.get('_route') == 'club_wizard' %} class="active"{% endif %}><a href="{{ path('club_wizard') }}">{{ 'club.wizard.menu.title'|trans }}</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_CLUB_ADMIN') %}
+                <li{% if app.request.get('_route') == 'club_admin_list' %} class="active"{% endif %}><a href="{{ path('club_admin_list') }}">{{ 'admin.club.menu.title'|trans }}</a></li>
+                {% endif %}
+                <li class="dropdown" id="apps">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#apps">
+                        {{ 'sport.apps.menu.title'|trans }}
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('ranking') }}">{{ 'sport.menu.ranking.title'|trans }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav primary pull-right">
+                <!--li>
+                    <div class="g-plusone" data-annotation="inline" data-width="300"></div>
+                </li-->
+                <li>
+                    <div class="btn-group pull-right">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-user"></i> {% if app.user != null %}{{ app.user }}{% else %}User{% endif %}
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if app.user != null %}
+                            <li{% if app.request.get('_route') == 'fos_user_profile_show' %} class="active"{% endif %}><a href="{{ path('fos_user_profile_show') }}">{{ 'my.profile.menu.title'|trans }}</a></li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}">Log ud</a>
+                            {% else %}
+                            <li>
+                                <a href="{{ path('fos_user_security_login') }}">Log ind</a>
+                            {% endif %}                    
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>

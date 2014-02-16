@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="span4">
+        <h2>5 sidste udfordringer</h2>
+        {% render 'FauconRankingBundle:Challenge:lastfive' %}
+        <p><a class="btn" href="{{ path('challenge') }}">Se alle &raquo;</a></p>
+    </div>
+    <div class="span4">
+        <h2>5 sidste resultater</h2>
+        {% render 'FauconRankingBundle:Game:lastfive' %}
+        <p><a class="btn" href="{{ path('game') }}">Se alle &raquo;</a></p>
+    </div>
+    <div class="span4">
+        <h2>Ranglister</h2>
+        {% render 'FauconRankingBundle:Category:list' %}
+    </div>
+</div>

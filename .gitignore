@@ -1,0 +1,13 @@
+app/cache/
+app/config/parameters_unoeuro.ini
+app/config/parameters_one.ini
+app/config/parameters_giga.ini
+app/bootstrap.php.cache
+app/logs/
+composer.phar
+migrate/
+nbproject/
+vendor/
+web/bundles/framework/
+web/bundles/webprofiler/
+web/bundles/sensiodistribution/

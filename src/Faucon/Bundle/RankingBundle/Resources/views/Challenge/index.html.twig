@@ -1,0 +1,57 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Alle udfordringer</h1>
+<p>
+Herunder kan de se alle udfordringer i systemet
+</p>
+<table id="js_challenges_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Udfordrer</th>
+            <th>Modstander</th>
+            <th>Klub</th>
+            <th>Rangliste</th>
+            <th class="hidden-phone">Dato for udfordring</th>
+            <th>Afviklet</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="6" class="dataTables_empty">Henter udfordringer</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Udfordrer</th>
+            <th>Modstander</th>
+            <th>Klub</th>
+            <th>Rangliste</th>
+            <th class="hidden-phone">Dato for udfordring</th>
+            <th>Afviklet</th>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}
+
+{% block javascript %}
+    jQuery(document).ready(function() {
+        jQuery('#js_challenges_table').dataTable({
+            'bProcessing': true,
+            'bServerSide': true,
+            'sDom': '<"top"i>rt<"bottom"flp><"clear">',
+            'sPaginationType': 'bootstrap',
+            'sAjaxSource': '{{ path('challenge_paging') }}',
+            'oLanguage': language,
+            'bFilter': false,
+            'aoColumns': [
+                { 'sClass': '' },
+                { 'sClass': '' },
+                { 'sClass': '' },
+                { 'sClass': '' },
+                { 'sClass': 'hidden-phone' },
+                { 'sClass': '' }
+            ]
+        });
+    });
+{% endblock %}

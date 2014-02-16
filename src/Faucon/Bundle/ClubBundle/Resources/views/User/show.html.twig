@@ -1,0 +1,68 @@
+{% extends '::ranking.base.html.twig' %}
+
+ {% block body %}
+<h1>Spillerprofil for {{ entity }} ({{ ranking }})</h1>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            Modstander (Rangering ved udfordring)
+        </th>
+        <th>
+            Oprettet
+        </th>
+        <th>
+            
+        </th>
+    </tr>
+    {% for challenge in challenges %}
+    <tr>
+        <td>
+            {{ challenge.challenged }} ({{ challenge.challengedrank }})
+        </td>
+        <td>
+            {{ challenge.created|date('Y-m-d H:i:s') }}
+        </td>
+        <td>
+            {% if challenge.game != null %}
+            {{ challenge.game }}
+            {% elseif myself %}
+            <a href="{{ path('game_new', { 'userid': entity.getId(), 'challengeid': challenge.getId() }) }}">
+                Indberet resultat
+            </a>
+            {% else %}
+            -
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<div id="chart_div">
+</div>
+{% endblock %}
+
+{% block chart%}
+<script type="text/javascript">
+    /*google.load('visualization', '1', {packages:['corechart']});
+    jQuery(document).ready(function() {
+        var datatable = new google.visualization.DataTable();
+        jQuery.getJSON('{{ path('rankinghistory_graph', { 'id': entity.getId() }) }}', function(data) {
+            datatable.addColumn('date', 'Dato');
+            datatable.addColumn('number', 'Rangering');
+            jQuery(data.rankings).each(function (key, ranking){
+                datatable.addRow([new Date(ranking.date), ranking.no]);
+            });
+            var options = {
+              width: 900, height: 400,
+              title: data.name,
+              legend: 'none',
+              pointSize: 5
+            };
+
+            var chartdiv = jQuery('div#chart_div');
+            var chart = new google.visualization.LineChart(jQuery('div#chart_div')[0]);
+            chart.draw(datatable, options);
+        });
+    });*/
+</script>
+{% endblock %}

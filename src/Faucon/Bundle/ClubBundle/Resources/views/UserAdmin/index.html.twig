@@ -1,0 +1,15 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Klubbens spillere</h1>
+
+<ul>
+    {% for clubrelation in clubrelations %}
+    <li>
+        <a href="{{ path('admin_user_edit', { 'id': clubrelation.user.id }) }}">
+            Rediger {{ clubrelation.user }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% block navigation %}
+    {% include '::navigation.base.html.twig' %}
+{% endblock %}
+    
+{% block container %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2">
+                <div class="well sidebar-nav" style="padding: 8px 0;">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Ranking</li>
+                        <li{% if app.request.get('_route') == 'ranking' %} class="active"{% endif %}><a href="{{ path('ranking') }}">Ranglister</a></li>
+                        <li{% if app.request.get('_route') == 'challenge' %} class="active"{% endif %}><a href="{{ path('challenge') }}">Udfordringer</a></li>
+                        <li{% if app.request.get('_route') == 'game' %} class="active"{% endif %}><a href="{{ path('game') }}">Kampe</a></li>
+                        <li{% if app.request.get('_route') == 'user' %} class="active"{% endif %}><a href="{{ path('user') }}">Spillere</a></li>
+                        {% if app.user != null %}
+                        <li{% if app.request.get('_route') == 'user_show_open_challenges' %} class="active"{% endif %}><a href="{{ path('user_show_open_challenges', { 'id': app.user.id }) }}">Mine udfordringer</a></li>
+                        {% endif %}
+                        {% if is_granted('ROLE_CLUB_ADMIN') %}
+                        <li class="nav-header">Administration</li>
+                        <li{% if app.request.get('_route') == 'admin_challenge' %} class="active"{% endif %}><a href="{{ path('admin_challenge') }}">{{ 'admin.page.link.to.administrate.challenges'|trans }}</a></li>
+                        <li{% if app.request.get('_route') == 'admin_challenge_new' %} class="active"{% endif %}><a href="{{ path('admin_challenge_new') }}">{{ 'admin.challenge.create.new.challenge'|trans }}</a></li>
+                        <li{% if app.request.get('_route') == 'admin_user' %} class="active"{% endif %}><a href="{{ path('admin_user') }}">{{ 'admin.page.link.to.user.overview'|trans }}</a></li>
+                        <li{% if app.request.get('_route') == 'club_admin_list' %} class="active"{% endif %}><a href="{{ path('club_admin_list') }}">{{ 'admin.page.link.to.club.overview'|trans }}</a></li>
+                        {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="#">{{ 'ranking.show.help.link'|trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span10">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        {% block teasers %}{% endblock %}
+    </div> <!-- /container -->
+{% endblock %}

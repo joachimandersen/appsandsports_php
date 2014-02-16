@@ -1,0 +1,13 @@
+<div class="fos_user_user_show">
+    <h1>{{ 'profile.show.my.profile'|trans }}</h1>
+    <p>{{ 'profile.show.name'|trans }}: {{ user.firstname }} {{ user.lastname }}</p>
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>{{ 'profile.show.phone'|trans }}: {{ user.phone }}</p>
+    <p>
+        <a href="{{ path('fos_user_profile_edit') }}">{{ 'profile.link.edit'|trans }}</a>
+        <a href="{{ path('fos_user_change_password') }}">{{ 'profile.link.edit.password'|trans }}</a>
+    </p>
+</div>
+<div id="chart_div">
+</div>

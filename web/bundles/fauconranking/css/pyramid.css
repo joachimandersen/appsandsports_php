@@ -1,0 +1,15 @@
+div.pyramidwrapper
+{
+    text-align: center;
+    margin-top: 20px;
+    clear: both;
+}
+div.pyramid
+{
+    display: inline-block;
+    width: 140px;
+    position: relative;
+    border: 1px solid black;
+    background-color: white;
+    margin-bottom: 4px;
+}

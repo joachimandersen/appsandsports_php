@@ -1,0 +1,4 @@
+Nej
+{% if (app.user != null and entity.challenger.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+- <a href="{{ path('game_new', { 'userid': entity.challenger.id, 'challengeid': entity.id }) }}">indberet resultat</a>
+{% endif %}

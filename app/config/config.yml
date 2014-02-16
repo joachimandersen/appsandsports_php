@@ -1,0 +1,174 @@
+imports:
+    - { resource: parameters.ini }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: da }
+    secret:          %secret%
+    charset:         UTF-8
+    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    session:
+        default_locale: da
+        auto_start:     true
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: true
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport:  %mailer_transport%
+    host:       %mailer_host%
+    port:       %mailer_port%
+
+jms_security_extra:
+    secure_controllers:  true
+    secure_all_services: false
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Faucon\Bundle\ClubBundle\Entity\User
+    from_email:
+            address:        info@appsandsports.com
+            sender_name:    Admin
+    profile:
+        form:
+            type:               club_user_edit
+            handler:            fos_user.profile.form.handler.default
+            name:               fos_user_profile_form
+            validation_groups:  [Profile]
+    change_password:
+        form:
+            type:               fos_user_change_password
+            handler:            fos_user.change_password.form.handler.default
+            name:               fos_user_change_password_form
+            validation_groups:  [ChangePassword]
+    registration:
+        confirmation:
+            enabled:    true
+            template:   FOSUserBundle:Registration:email.txt.twig
+        form:
+            type:               club_user_create
+            handler:            fos_user.registration.form.handler.default
+            name:               fos_user_registration_form
+            validation_groups:  [Registration]
+    resetting:
+        token_ttl: 86400
+        email:
+            template:   FOSUserBundle:Resetting:email.txt.twig
+        form:
+            type:               fos_user_resetting
+            handler:            fos_user.resetting.form.handler.default
+            name:               fos_user_resetting_form
+            validation_groups:  [ResetPassword]
+    service:
+        mailer:                 fos_user.mailer.default
+        email_canonicalizer:    fos_user.util.canonicalizer.default
+        username_canonicalizer: fos_user.util.canonicalizer.default
+        user_manager:           fos_user.user_manager.default
+    template:
+        engine: twig
+        theme:  FOSUserBundle::form.html.twig
+
+services:
+    date_utility:
+        class:        Faucon\Bundle\RankingBundle\Services\DateUtility
+        arguments:    [date]
+    update_ranking:
+        class: Faucon\Bundle\RankingBundle\Listener\RankingUpdater
+        calls:
+            - [setContainer,  ["@service_container="]]
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+    delete_ranking:
+        class: Faucon\Bundle\RankingBundle\Listener\RankingUpdater
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+    create_challenge:
+        class: Faucon\Bundle\RankingBundle\Listener\ChallengeEvents
+        arguments: ["@service_container"]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+    delete_user:
+        class: Faucon\Bundle\ClubBundle\Listener\UserEvents
+        arguments: ["@service_container"]
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+    match_status:
+        class: Faucon\Bundle\RankingBundle\Enums\MatchStatus
+        arguments: ["@service_container"]
+    sport:
+        class: Faucon\Bundle\RankingBundle\Enums\Sport
+        arguments: ["@service_container"]
+    faucon_user.edit.form.type:
+        class: Faucon\Bundle\ClubBundle\Form\Type\EditUserFormType
+        arguments: [%fos_user.model.user.class%, "@service_container"]
+        tags:
+            - { name: form.type, alias: club_user_edit }
+    faucon_user.create.form.type:
+        class: Faucon\Bundle\ClubBundle\Form\Type\RegistrateUserFormType
+        arguments: [%fos_user.model.user.class%, "@service_container"]
+        tags:
+            - { name: form.type, alias: club_user_create }
+    challenge_type:
+        class: Faucon\Bundle\RankingBundle\Form\ChallengeType
+        arguments: ["@service_container"]
+    category_type:
+        class: Faucon\Bundle\RankingBundle\Form\CategoryType
+        arguments: ["@service_container"]
+    club_relation_type:
+        class: Faucon\Bundle\ClubBundle\Form\ClubRelationType
+        arguments: ["@service_container"]
+
+parameters:
+    sport:
+        tennis:
+            maxsetsinmatch: 3
+            setstowin: 2
+            numberofpointstowinset: 6
+        squash:
+            maxsetsinmatch: 5
+            setstowin: 3
+            numberofpointstowinset: 11
+        badminton:
+            maxsetsinmatch: 5
+            setstowin: 3
+            numberofpointstowinset: 21
+        tabletennis:
+            maxsetsinmatch: 5
+            setstowin: 3
+            numberofpointstowinset: 11
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: %kernel.logs_dir%/%kernel.environment%.log
+            level: info

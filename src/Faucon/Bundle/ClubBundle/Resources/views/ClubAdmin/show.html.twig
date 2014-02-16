@@ -1,0 +1,49 @@
+{% extends '::ranking.base.html.twig' %}
+{% block applicationname %} {{ 'application.name.default'|trans }} {% endblock %}
+{% block body %}
+<section id="thumbnails">
+    <div class="row-fluid">
+        <div class="span5">
+            <h2>{{ 'About'|trans }} {{ entity.name }}</h2>
+            <p>
+                {{ entity.synopsis }}
+            </p>
+        </div>
+        <div class="span5">
+            <h2>{{ 'admin.club.address.header'|trans }}</h2>
+            <p>
+                {{ entity.street }}<br />
+                {{ entity.zip }} {{ entity.city }}<br />
+                {{ entity.country }}
+            </p>
+            </ul>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span5">
+            <p>
+                <a href="{{ path('club_admin_edit', { 'id': entity.id }) }}" class="btn btn-info">
+                    {{ 'admin.club.edit.button.text'|trans }}
+                </a>
+                <a href="{{ path('club_admin_invite', { 'id': entity.id }) }}" class="btn btn-info">
+                    {{ 'admin.club.invite.users'|trans}}
+                </a>
+
+            </p>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span5">
+            <h2>{{ 'admin.club.categories.header'|trans }}</h2>
+            <ul>
+            {% for category in entity.categories %}
+                <li><a href="{{ path('category_admin_edit', { 'id': category.id }) }}">{{ category.name }} ({{ sport.getSport(category.sport) }})</a></li>
+            {% endfor %}
+                <li><a href="{{ path('category_admin_add', { 'id': entity.id }) }}">{{ 'admin.club.create.category'|trans }}</a></li>
+            </ul>
+        </div>
+        <div class="span5">
+        </div>
+    </div>
+</section>
+{% endblock %}

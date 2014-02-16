@@ -1,0 +1,67 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Klubranglister</h1>
+<p>
+Vedrørende klubrangliste er følgende regler for udfordring:
+<ul>
+<li>Der kan udfordres en række op og til venstre i samme række</li>
+<li>En udfordring skal afvikles og indrapporteres inden 14 dage fra udfordringsdato</li>
+<li>Det er altid udfordren der indrapporterer resultatet her på siden</li>
+<li>Såfremt der ønskes dommer til kampen, finder spillerne selv denne i samråd</li>
+</ul>
+</p>
+<p>
+Vælg en kategori herunder for at se ranglisten og for at oprette en udfordring.
+</p>
+<table id="js_ranking_table" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>{{ 'ranking.category.name'|trans }}</th>
+            <th class="hidden-phone">{{ 'ranking.category.description'|trans }}</th>
+            <th class="hidden-phone">{{ 'ranking.category.created'|trans }}</th>
+            <th>{{ 'ranking.category.club.name'|trans }}</th>
+            <th>{{ 'ranking.category.details'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="5" class="dataTables_empty">Henter ranglister</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>{{ 'ranking.category.name'|trans }}</th>
+            <th class="hidden-phone">{{ 'ranking.category.description'|trans }}</th>
+            <th class="hidden-phone">{{ 'ranking.category.created'|trans }}</th>
+            <th>{{ 'ranking.category.club.name'|trans }}</th>
+            <th>{{ 'ranking.category.details'|trans }}</th>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}
+
+{% block teasers %}
+    {% include '::ranking.teaser.general.html.twig' %}
+{% endblock%}
+
+{% block javascript %}
+    jQuery(document).ready(function() {
+        jQuery('#js_ranking_table').dataTable({
+            'bProcessing': true,
+            'bServerSide': true,
+            'sDom': '<"top"i>rt<"bottom"flp><"clear">',
+            'sPaginationType': 'bootstrap',
+            'sAjaxSource': '{{ path('ranking_paging') }}',
+            'oLanguage': language,
+            'bFilter': false,
+            'aoColumns': [
+                { 'sClass': '' },
+                { 'sClass': 'hidden-phone' },
+                { 'sClass': 'hidden-phone' },
+                { 'sClass': '' },
+                { 'sClass': '' }
+            ]
+        });
+    });
+{% endblock %}

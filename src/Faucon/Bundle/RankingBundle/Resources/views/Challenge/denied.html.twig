@@ -1,0 +1,19 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Udfordring ikke mulig</h1>
+
+<p>
+{% if me %}
+Du
+{% else %}
+Din modstander
+{% endif %}
+har allerede en åben udfordring i kategorien {{ category }}. Det er kun tilladt at have en åben udfordring ad gangen pr kategori.
+</p>
+{% if me %}
+<p>
+Hvis du allerede har spillet kampen kan du indberette resultatet <a href="{{ path('game_new', { 'userid': user.id, 'challengeid': challengeid }) }}">her</a>
+</p>
+{% endif %}
+{% endblock %}

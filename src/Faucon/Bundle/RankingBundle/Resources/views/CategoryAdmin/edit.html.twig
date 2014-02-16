@@ -1,0 +1,20 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block hero %}
+<h1>Category edit</h1>
+{% endblock %}
+{% block body %}
+
+<form action="{{ path('category_admin_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    {{ form_widget(edit_form) }}
+    <p>
+        <button type="submit" class="btn btn-primary">{{ 'category.edit.button.name'|trans }}</button>
+    </p>
+</form>
+<div>
+    <a href="{{ path('category_admin_edit_rankings', { 'id': entity.id }) }}" class="btn">{{ 'category.edit.rankings'|trans }}</a>
+</div>
+{% endblock %}
+{% block category %}
+{{ category }}
+{% endblock %}

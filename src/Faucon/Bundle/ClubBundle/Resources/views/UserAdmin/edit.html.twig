@@ -1,0 +1,126 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Rediger {{ user }}</h1>
+
+<p>
+    <select name="categories[]" multiple="multiple" class="multiselect" id="js_category_selector" style="display: none; ">
+    {% for category in categories %}
+        <option value="{{ category.id }}"{% if category.id in ids %} selected="selected"{% endif %}>{{ category }}</option>
+    {% endfor %}
+    </select>
+</p>
+<p>
+    <button class="btn btn-primary" id="js_modal_show">{{ 'category.multiselect.button.save'|trans }}</button>
+    <a href="{{ path('admin_user') }}" class="btn">{{ 'category.multiselect.button.cancel'|trans }}</a>
+    <a href="#" class="btn btn-danger" id="js_delete_user_modal_show">{{ 'user.confirm.delete'|trans }}</a>
+</p>
+
+<div class="modal hide" id="js_confirm_modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{{ 'category.multiselect.confirm.header'|trans }}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{{ 'category.multiselect.confirm.message'|trans }}</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{{ 'category.multiselect.confirm.cancel'|trans }}</a>
+        <a href="#" class="btn btn-primary" id="js_save_categories">{{ 'category.multiselect.confirm.save'|trans }}</a>
+    </div>
+</div>
+
+<div class="modal hide" id="js_confirm_delete_modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>{{ 'user.confirm.delete.header'|trans }}</h3>
+    </div>
+    <div class="modal-body">
+        <p>{{ 'user.confirm.delete.message'|trans }}</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{{ 'user.confirm.delete.cancel'|trans }}</a>
+        <a href="#" class="btn btn-primary" id="js_delete_user">{{ 'user.confirm.delete.ok'|trans }}</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+jQuery(document).ready(function() {
+    jQuery('#js_category_selector').multiSelect({
+        selectableHeader : '<h4 class="ms-container">{{ 'category.multiselect.available.header'|trans }}</h4>',
+        selectedHeader : '<h4 class="ms-container">{{ 'category.multiselect.chosen.header'|trans }}</h4>'
+    });
+    jQuery('#js_confirm_modal').modal({show: false});
+    jQuery('#js_modal_show').click(function() {
+        jQuery('#js_confirm_modal').modal('show');
+    });
+    jQuery('#js_confirm_delete_modal').modal({show: false});
+    jQuery('#js_delete_user_modal_show').click(function() {
+        jQuery('#js_confirm_delete_modal').modal('show');
+    });
+    jQuery('#js_save_categories').click(function() {
+        var selection = jQuery('#js_category_selector').multiSelect('selection');
+        jQuery.ajax({
+            type: 'POST',
+            url: '{{ path('admin_user_update', {'id': user.id }) }}?XDEBUG_SESSION_START=netbeans-xdebug',
+            data: JSON.stringify({categories: selection}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (msg) {
+                jQuery('#js_confirm_modal').modal('hide');
+                if (msg.status == 'ok') {
+                    jQuery.faucon.showSuccessDialog(
+                        '{{ 'category.multiselect.saved.with.success.header'|trans }}',
+                        '{{ 'category.multiselect.saved.with.success.message'|trans }}',
+                        2000
+                    );
+                }
+            },
+            error: function (req, status, ex) {
+                jQuery('#js_confirm_modal').modal('hide');
+                jQuery.faucon.showSuccessDialog(
+                    '{{ 'category.multiselect.saved.with.error.header'|trans }}',
+                    '{{ 'category.multiselect.saved.with.error.message'|trans }}',
+                    2000
+                );
+            }
+        });
+    });
+    jQuery('#js_delete_user').click(function() {
+        jQuery.ajax({
+            type: 'POST',
+            url: '{{ path('admin_user_delete', {'id': user.id }) }}?XDEBUG_SESSION_START=netbeans-xdebug',
+            data: JSON.stringify({}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (msg) {
+                jQuery('#js_confirm_delete_modal').modal('hide');
+                if (msg.status == 'ok') {
+                    jQuery.faucon.showSuccessDialog(
+                        '{{ 'user.deleted.with.success.header'|trans }}',
+                        '{{ 'user.deleted.with.success.message'|trans }}',
+                        2000
+                    );
+                }
+                else if (msg.status == 'denied') {
+                    jQuery.faucon.showSuccessDialog(
+                        '{{ 'user.deleted.with.denied.header'|trans }}',
+                        '{{ 'user.deleted.with.denied.message'|trans }}',
+                        2000
+                    );
+                }
+            },
+            error: function (req, status, ex) {
+                jQuery('#js_confirm_delete_modal').modal('hide');
+                jQuery.faucon.showSuccessDialog(
+                    '{{ 'user.deleted.with.error.header'|trans }}',
+                    '{{ 'user.deleted.with.error.message'|trans }}',
+                    2000
+                );
+            }
+        });
+    });
+});
+{% endblock %}

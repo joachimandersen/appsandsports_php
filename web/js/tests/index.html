@@ -1,0 +1,301 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="qunit.css" rel="stylesheet" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places" type="text/javascript"></script>
+        <script src="../json2.js" type="text/javascript"></script>
+        <script src="../jquery.numeric.js" type="text/javascript"></script>
+        <script src="jquery.simulate.js" type="text/javascript"></script>
+        <script src="../ui.matchscore.js" type="text/javascript"></script>
+        <script src="../ui.scorevalidator.js" type="text/javascript"></script>
+        <script src="../ui.google.autocomplete.js" type="text/javascript"></script>
+        <script src="qunit.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                module("ui.matchscore tests");
+
+                test('Test widget creation', function() {
+                    resetBaseHtml('js_widget1');
+                    expect(2);
+                    var numberOfRowCreatedEvents = 0;
+                    jQuery('#qunit-fixture').bind('matchscore:row:created', function(e) {
+                        numberOfRowCreatedEvents++;
+                    });
+                    jQuery('#js_widget1').matchscore({});
+                    jQuery('#qunit-fixture').unbind('matchscore:row:created')
+                    var expectedrows = 3;
+                    equal(jQuery('#js_widget1 > tbody > tr').length, expectedrows, 'Expected ' + expectedrows + ' rows');
+                    equal(numberOfRowCreatedEvents, expectedrows, 'Expected ' + expectedrows + ' row created event');
+                    jQuery('#js_widget1').matchscore('destroy');
+                });
+                
+                test('Test that save button is added and enabled', function() {
+                    resetBaseHtml('js_widget2');
+                    expect(3);
+                    jQuery('#js_widget2').matchscore({
+                        setstowin: 5,
+                        savebuttoncaption: 'gemknap'
+                    });
+                    var btn = jQuery('#js_widget2').find('button:last');
+                    equal(btn.attr('type'), 'submit', 'Expected that the save button is a submit button');
+                    equal(btn.text(), 'gemknap', 'Expected that the save button title is gemknap');
+                    equal(btn.attr('disabled'), undefined, 'Expected that the save button is enabled');
+                    jQuery('#js_widget2').matchscore('destroy');
+                });
+                
+                test('Test that save button is disabled', function() {
+                    resetBaseHtml('js_widget3');
+                    expect(1);
+                    jQuery('#js_widget3').matchscore({
+                        validator: function() {jQuery('#js_widget3').scorevalidator({});}
+                    });
+                    var btn = jQuery('#js_widget3').find('button:last');
+                    equal(btn.attr('disabled'), 'disabled', 'Expected that the save button is enabled');
+                    jQuery('#js_widget3').matchscore('destroy');
+                });
+                
+                test('Test that validate is triggered when typing in any of the text inputs', function() {
+                    resetBaseHtml('js_widget4');
+                    expect(1);
+                    jQuery('#js_widget4').matchscore({
+                        validator: function() {jQuery('#js_widget4').scorevalidator({});}
+                    });
+                    var numberOfValidateEvents = 0;
+                    jQuery('#qunit-fixture').bind('matchscore:validate', function(e) {
+                        numberOfValidateEvents++;
+                    });
+                    simulateKeyPress(jQuery('#js_widget4').find('input.home:first'), 49);
+                    jQuery('#qunit-fixture').unbind('matchscore:validate');
+                    var expectedEvents = 1;
+                    equal(numberOfValidateEvents, 1, 'Expected that matchscore:validate was called '+expectedEvents+' times');
+                    jQuery('#js_widget4').matchscore('destroy');
+                });
+                
+                test('Test set validation', function() {
+                    resetBaseHtml('js_widget5');
+                    expect(2);
+                    jQuery('#js_widget5').matchscore({
+                        validator: function() {jQuery('#js_widget5').scorevalidator({});}
+                    });
+                    var home = jQuery('#js_widget5').find('input.home:first');
+                    var away = jQuery('#js_widget5').find('input.away:first');
+                    ok(home.attr('style') == undefined);
+                    // type 11 in first home input
+                    home.val('11');
+                    simulateKeyPress(home, 49);
+                    simulateKeyPress(home, 49);
+                    // type 1 in first away input
+                    away.val('1');
+                    simulateKeyPress(away, 49); // Only this trigger is needed to make the test pass
+                    ok(home.attr('style') != undefined);
+                    jQuery('#js_widget5').matchscore('destroy');
+                });
+                
+                test('Test the generated json', function() {
+                    resetBaseHtml('js_widget6');
+                    expect(6);
+                    jQuery('#js_widget6').matchscore({
+                        validator: function(init) {
+                            if (init) {
+                                jQuery('#js_widget6').scorevalidator({});
+                            }
+                            else {
+                                jQuery('#js_widget6').scorevalidator('destroy');
+                            }
+                        },
+                        resultcontainerselector: '#score'
+                    });
+                    var home1 = jQuery('#js_widget6').find('input.home:first');
+                    home1.val('11');
+                    simulateKeyPress(home1, 49);
+                    var away1 = jQuery('#js_widget6').find('input.away:first');
+                    away1.val('1');
+                    simulateKeyPress(away1, 49);
+                    var home2 = jQuery('#js_widget6').find('input.home:eq(1)');
+                    home2.val('11');
+                    simulateKeyPress(home2, 49);
+                    var away2 = jQuery('#js_widget6').find('input.away:eq(1)');
+                    away2.val('1');
+                    simulateKeyPress(away2, 49);
+                    var home3 = jQuery('#js_widget6').find('input.home:last');
+                    home3.val('11');
+                    simulateKeyPress(home3, 49);
+                    var away3 = jQuery('#js_widget6').find('input.away:last');
+                    away3.val('1');
+                    simulateKeyPress(away3, 49);
+                    var score = jQuery.parseJSON(jQuery('#score').val());
+                    jQuery.each(score, function(key, set) {
+                        equal(set.home, 11, 'Expect home score is 11');
+                        equal(set.away, 1, 'Expect away score is 1');
+                    });
+                    jQuery('#js_widget6').matchscore('destroy');
+                });
+                
+                module("ui.google.autocomplete tests");
+                
+                asyncTest('Test google address autocompleter', function() {
+                    applyGoogleHtml('js_google1');
+                    expect(9);
+                    jQuery('#js_google1_address').googleautocomplete({
+                        streetselector: '#js_google1_street',
+                        numberselector: '#js_google1_number',
+                        zipselector: '#js_google1_zip',
+                        cityselector: '#js_google1_city',
+                        regionselector: '#js_google1_region',
+                        countryselector: '#js_google1_country',
+                        longitudeselector: '#js_google1_longitude',
+                        latitudeselector: '#js_google1_latitude'
+                    });
+                    var address = jQuery('#js_google1_address');
+                    address.val('mølletoften 16 4200').keydown();
+                    setTimeout(function() {
+                        address.simulate( "keydown", { keyCode: jQuery.ui.keyCode.DOWN } );
+                        address.simulate( "keydown", { keyCode: jQuery.ui.keyCode.ENTER } );
+                        equal(address.val(), response.results[0].formatted_address);
+                        equal(jQuery('#js_google1_street').val(), 'Mølletoften');
+                        equal(jQuery('#js_google1_number').val(), '16');
+                        equal(jQuery('#js_google1_zip').val(), '4200');
+                        equal(jQuery('#js_google1_city').val(), 'Slagelse');
+                        equal(jQuery('#js_google1_region').val(), 'Region Zealand');
+                        equal(jQuery('#js_google1_country').val(), 'Denmark');
+                        equal(jQuery('#js_google1_longitude').val(), '11.3346940');
+                        equal(jQuery('#js_google1_latitude').val(), '55.3975580');
+                        start();
+                    }, 310 );
+                });
+                
+            });
+            
+            var resetBaseHtml = function(id) {
+                var html = '<table id="'+id+'">' +
+                    '<thead>' +
+                        '<th>' +
+                            '<input type="hidden" id="score" />' +
+                        '</th>' +
+                    '</thead>' +
+                    '<tbody>' +
+
+                    '</tbody>' +
+                    '<tfoot>' +
+
+                    '</tfoot>' +
+                '</table>';
+                jQuery('div#qunit-fixture').html(html);
+            };
+            
+            var applyGoogleHtml = function(id) {
+                var html = '<input type="text" id="' + id + '_address" />' +
+                    '<input type="text" id="' + id + '_street" />' +
+                    '<input type="text" id="' + id + '_number" />' +
+                    '<input type="text" id="' + id + '_zip" />' +
+                    '<input type="text" id="' + id + '_city" />' +
+                    '<input type="text" id="' + id + '_country" />' +
+                    '<input type="text" id="' + id + '_region" />' +
+                    '<input type="text" id="' + id + '_longitude" />' +
+                    '<input type="text" id="' + id + '_latitude" />';
+                jQuery('div#qunit-fixture').html(html);
+            };
+            
+            var simulateKeyPress = function (triggerOn, keycode) {
+                triggerOn.simulate('keydown', { keyCode: keycode, ctrlKey: false, shiftKey: false });
+                triggerOn.simulate('keypress', { keyCode: keycode, ctrlKey: false, shiftKey: false });
+                triggerOn.simulate('keyup', { keyCode: keycode, ctrlKey: false, shiftKey: false });
+            };
+            
+            // Google maps geocoder mock
+            var response = {"results":
+                    [{"address_components": [
+                        {
+                        "long_name" : "16",
+                        "short_name" : "16",
+                        "types" : [ "street_number" ]
+                        },
+                        {
+                        "long_name" : "Mølletoften",
+                        "short_name" : "Mølletoften",
+                        "types" : [ "route" ]
+                        },
+                        {
+                        "long_name" : "Slagelse",
+                        "short_name" : "Slagelse",
+                        "types" : [ "locality", "political" ]
+                        },
+                        {
+                        "long_name" : "Slagelse",
+                        "short_name" : "Slagelse",
+                        "types" : [ "administrative_area_level_2", "political" ]
+                        },
+                        {
+                        "long_name" : "Region Zealand",
+                        "short_name" : "Region Zealand",
+                        "types" : [ "administrative_area_level_1", "political" ]
+                        },
+                        {
+                        "long_name" : "Denmark",
+                        "short_name" : "DK",
+                        "types" : [ "country", "political" ]
+                        },
+                        {
+                        "long_name" : "4200",
+                        "short_name" : "4200",
+                        "types" : [ "postal_code" ]
+                        }
+                    ],
+                    "formatted_address" : "Mølletoften 16, 4200 Slagelse Municipality, Denmark",
+                    "geometry" : {
+                        "location" : {
+                        lat: function() { return '55.3975580';},
+                        lng: function() { return '11.3346940';}
+                        },
+                        "location_type" : "ROOFTOP",
+                        "viewport" : {
+                        "northeast" : {
+                            "lat" : 55.39890698029149,
+                            "lng" : 11.33604298029150
+                        },
+                        "southwest" : {
+                            "lat" : 55.39620901970849,
+                            "lng" : 11.33334501970850
+                        }
+                        }
+                    },
+                    "types" : [ "street_address" ]
+                }],
+            "status" : "OK"
+            };
+            var google = {
+                maps: {
+                    Geocoder: function() {
+                        this.geocode = function(args, callback) {
+                            callback(response.results, response.status);
+                        }
+                    },
+                    __gjsload__: function(a,b) { // this is expected by google apis
+                        
+                    }
+                }
+            };
+            
+        </script>
+    </head>
+    <body>
+        <h1 id="qunit-header">QUnit example</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+        <div id="qunit-fixture">
+            
+            
+            
+        </div>
+    </body>
+</html>

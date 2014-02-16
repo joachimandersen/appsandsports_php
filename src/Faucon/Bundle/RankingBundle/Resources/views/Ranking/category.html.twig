@@ -1,0 +1,28 @@
+{% extends '::ranking.base.html.twig' %}
+
+{% block body %}
+<h1>Klubranglister</h1>
+<p>
+Vedrørende klubrangliste er følgende regler for udfordring:
+<ul>
+<li>Der kan udfordres en række op og til venstre i samme række</li>
+<li>En udfordring skal afvikles og indrapporteres inden 14 dage fra udfordringsdato</li>
+<li>Det er altid udfordren der indrapporterer resultatet her på siden</li>
+<li>Såfremt der ønskes dommer til kampen, finder spillerne selv denne i samråd</li>
+<li>Ingen udfordringskampe i samspilstiden eller i træningstiden</li>
+</ul>
+</p>
+<p>
+Vælg en kategori herunder for at se ranglisten og for at oprette en udfordring.
+</p>
+<ul>
+{% for entity in entities %}
+    <li>
+        <a href="{{ path('ranking_list', { 'categoryid': entity.id }) }}">{{ entity.name }}</a>
+        <ul>
+            <li>{{ entity.description }}</li>
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

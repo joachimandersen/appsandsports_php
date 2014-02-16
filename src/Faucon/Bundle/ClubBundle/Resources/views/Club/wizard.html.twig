@@ -1,0 +1,125 @@
+{% extends '::club.base.html.twig' %}
+{% block applicationname %} {{ 'application.name.default'|trans }} {% endblock %}
+{% block body %}
+<h2>{{ 'club.create.new'|trans }}</h2>
+<section id="thumbnails">
+<form action="{{ path('club_create') }}" method="post" {{ form_enctype(form) }}>
+    <div class="row">
+    <div class="span6">
+    {{ form_row(form.club) }}
+    <div>
+    <label for="address_lookup" class="required">Adresse</label>
+    <input type="text" id="address_lookup" />
+    </div>
+    <div id="mapcanvas" style="width: 460px; height: 320px;">
+    </div>
+    </div>
+    <div class="span6">
+    {{ form_rest(form) }}
+    </div>
+    </div>
+    <p>
+        <button type="submit" id="js_submit_club_creation_button" class="btn btn-primary">Create</button>
+    </p>
+</form>
+</section>
+
+{% endblock %}
+{% block javascript%}
+    jQuery(document).ready(function($) {
+        $('#address_lookup').googleautocomplete({
+            streetselector: '#{{ form.club.street.vars.id }}',
+            numberselector: '#{{ form.club.number.vars.id }}',
+            zipselector: '#{{ form.club.zip.vars.id }}',
+            cityselector: '#{{ form.club.city.vars.id }}',
+            regionselector: '#{{ form.club.region.vars.id }}',
+            countryselector: '#{{ form.club.country.vars.id }}',
+            longitudeselector: '#{{ form.club.longitude.vars.id }}',
+            latitudeselector: '#{{ form.club.latitude.vars.id }}',
+            usemap: true,
+            mapcontainer: '#mapcanvas'
+        });
+        $('form').find('input, textarea').not(':hidden').each(function(key, input) {
+            $(input).bind('change keyup', function() {
+                validateForm();
+            });
+        });
+        $('#{{ form.user.username.vars.id }}').keyup(function() {
+            var self = this;
+            if ($(this).data('ajax') !== undefined) {
+                $(this).data('ajax').abort();
+            }
+            $(this).data('ajax', $.ajax({
+                    type: 'POST',
+                    url: '{{ path('user_valid_username') }}',
+                    data: JSON.stringify({ username: $(this).val() }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (valid) {
+                        if (!valid) {
+                            $(self).addClass('error');
+                        }
+                        else {
+                            $(self).removeClass('error');
+                        }
+                        validateForm();
+                    }
+                })
+            );
+        });
+        $('#{{ form.user.email.vars.id }}').keyup(function() {
+            var self = this;
+            if ($(this).data('ajax') !== undefined) {
+                $(this).data('ajax').abort();
+            }
+            $(this).data('ajax', $.ajax({
+                    type: 'POST',
+                    url: '{{ path('user_valid_email') }}',
+                    data: JSON.stringify({ email: $(this).val() }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (valid) {
+                        if (!valid) {
+                            $(self).addClass('error');
+                        }
+                        else {
+                            $(self).removeClass('error');
+                        }
+                        validateForm();
+                    }
+                })
+            );
+        });
+        validateForm();
+    });
+    var validateForm = function() {
+        var valid = true;
+        var empty = false;
+        $('form').find('input, textarea').not(':hidden').each(function(key, input) {
+            empty = empty || $.trim($(input).val()) === '';
+        });
+        valid = valid && !empty;
+        if (valid) {
+            $('form').find('input, textarea').not(':hidden').each(function(key, input) {
+                valid = valid && !$(input).hasClass('error');
+            });
+        }
+        var pw1 = $('form').find('input:password:first');
+        var pw2 = $('form').find('input:password:last');
+        valid = valid && pw1.val() == pw2.val();
+        if (pw1.val() != pw2.val()) {
+            pw1.addClass('error');
+            pw2.addClass('error');
+        }
+        else {
+            pw1.removeClass('error');
+            pw2.removeClass('error');
+        }
+        if(!valid) {
+            $('#js_submit_club_creation_button').attr('disabled', 'disabled');
+        }
+        else {
+            $('#js_submit_club_creation_button').removeAttr('disabled');
+        }
+    };
+{% endblock %}

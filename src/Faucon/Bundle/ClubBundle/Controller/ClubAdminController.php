@@ -17,14 +17,13 @@ use Faucon\Bundle\ClubBundle\Form\UserType;
 /**
  * Club controller.
  *
- * @Route("/admin/club")
  */
 class ClubAdminController extends Controller
 {
     /**
      * Lists all Club entities.
      *
-     * @Route("/", name="club_admin")
+     * @Route("/admin/club/", name="club_admin")
      * @Template()
      */
     public function indexAction()
@@ -42,7 +41,7 @@ class ClubAdminController extends Controller
     /**
      * Finds and displays a Club entity.
      *
-     * @Route("/{id}/edit", name="club_admin_edit")
+     * @Route("/admin/club/{id}/edit", name="club_admin_edit")
      * @Template()
      */
     public function editAction($id)
@@ -61,7 +60,7 @@ class ClubAdminController extends Controller
     /**
      * Edits an existing Club entity.
      *
-     * @Route("/{id}/update", name="club_admin_update")
+     * @Route("/admin/club/{id}/update", name="club_admin_update")
      * @Method("post")
      * @Template("FauconClubBundle:ClubAdmin:edit.html.twig")
      */
@@ -94,7 +93,7 @@ class ClubAdminController extends Controller
     /**
      * Finds and displays Club entites.
      *
-     * @Route("/{id}/show", name="club_admin_show")
+     * @Route("/admin/club/{id}/show", name="club_admin_show")
      * @Template()
      */
     public function showAction($id)
@@ -113,7 +112,7 @@ class ClubAdminController extends Controller
     /**
      * Finds and displays Club entites.
      *
-     * @Route("/list", name="club_admin_list")
+     * @Route("/admin/club/list", name="club_admin_list")
      * @Template()
      */
     public function listAction()
@@ -140,7 +139,7 @@ class ClubAdminController extends Controller
     /**
      * Finds and displays Club entites.
      *
-     * @Route("/{id}/invite", name="club_admin_invite")
+     * @Route("/admin/club/{id}/invite", name="club_admin_invite")
      * @Template()
      */
     public function inviteAction($id)
@@ -159,7 +158,7 @@ class ClubAdminController extends Controller
     /**
      * Send invitations to join a club
      *
-     * @Route("/{id}/sendinvites", defaults={"_format"="json"}, name="club_admin_send_invite")
+     * @Route("/admin/club/{id}/sendinvites", defaults={"_format"="json"}, name="club_admin_send_invite")
      * @Method("post")
      */
     public function sendinvitesAction($id)
@@ -185,7 +184,7 @@ class ClubAdminController extends Controller
     /**
      * Trigger the sending of unsent invites
      *
-     * @Route("/sendunsentinvites", defaults={"_format"="json"}, name="club_admin_trigger_send_invite")
+     * @Route("/club/sendunsentinvites", defaults={"_format"="json"}, name="club_admin_trigger_send_invite")
      * @Method("get")
      */
     public function sendUnsentInvitesAction()

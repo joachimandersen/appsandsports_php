@@ -3,7 +3,7 @@
 namespace Faucon\Bundle\ClubBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 class ClubRelationType extends AbstractType
@@ -15,7 +15,7 @@ class ClubRelationType extends AbstractType
         $this->container = $container;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('club', new \Faucon\Bundle\ClubBundle\Form\ClubType())
                 ->add('user', $this->container->get('faucon_user.create.form.type'));

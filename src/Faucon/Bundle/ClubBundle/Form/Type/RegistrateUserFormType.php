@@ -2,7 +2,7 @@
 
 namespace Faucon\Bundle\ClubBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as RegistrationFormType;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -16,7 +16,7 @@ class RegistrateUserFormType extends RegistrationFormType
         $this->container = $container;
     }
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
         $builder->remove('username');

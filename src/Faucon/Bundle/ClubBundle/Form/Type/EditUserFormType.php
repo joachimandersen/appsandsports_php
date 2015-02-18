@@ -2,7 +2,8 @@
 
 namespace Faucon\Bundle\ClubBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\ProfileFormType as ProfileFormType;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -16,7 +17,7 @@ class EditUserFormType extends ProfileFormType
         $this->container = $container;
     }
     
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
         $builder->remove('current');
@@ -27,7 +28,7 @@ class EditUserFormType extends ProfileFormType
             ));
     }
     
-    public function buildUserForm(FormBuilder $builder, array $options)
+    public function buildUserForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildUserForm($builder, $options);
         $builder->remove('username');

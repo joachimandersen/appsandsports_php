@@ -2,6 +2,7 @@ app/cache/
 app/config/parameters_unoeuro.ini
 app/config/parameters_one.ini
 app/config/parameters_giga.ini
+app/config/parameters.*
 app/bootstrap.php.cache
 app/logs/
 composer.phar

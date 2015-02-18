@@ -1,20 +1,18 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: security.yml }
 
 framework:
-    #esi:             ~
     translator:      { fallback: da }
     secret:          %secret%
-    charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale: da
     session:
-        default_locale: da
-        auto_start:     true
+        handler_id: ~
 
 # Twig Configuration
 twig:
@@ -48,7 +46,6 @@ swiftmailer:
     port:       %mailer_port%
 
 jms_security_extra:
-    secure_controllers:  true
     secure_all_services: false
 
 fos_user:
@@ -93,9 +90,7 @@ fos_user:
         email_canonicalizer:    fos_user.util.canonicalizer.default
         username_canonicalizer: fos_user.util.canonicalizer.default
         user_manager:           fos_user.user_manager.default
-    template:
-        engine: twig
-        theme:  FOSUserBundle::form.html.twig
+#    template: FOSUserBundle::form.html.twig
 
 services:
     date_utility:

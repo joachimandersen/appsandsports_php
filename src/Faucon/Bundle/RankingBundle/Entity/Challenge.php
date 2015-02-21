@@ -176,7 +176,7 @@ class Challenge
     }
 
     /**
-     * @ORM\prePersist
+     * @ORM\PrePersist
      */
     public function setCreatedValue()
     {

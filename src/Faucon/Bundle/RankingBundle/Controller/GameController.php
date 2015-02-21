@@ -42,14 +42,14 @@ class GameController extends Controller
      */
     public function pagingAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $datatables = new DataTables($this->getRequest(), $em->getRepository('FauconRankingBundle:Game'), $this->container);
         return $this->render('FauconRankingBundle:Game:paging.json.twig', array('data' => $datatables->getJsonResult()));
     }
 
     public function lastfiveAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconRankingBundle:Game')->findLastFive();
 
@@ -59,7 +59,7 @@ class GameController extends Controller
     
     public function lastfiveincategoryAction($categoryid)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconRankingBundle:Game')->findLastFiveInCategory($categoryid);
 
@@ -75,7 +75,7 @@ class GameController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $repo = $em->getRepository('FauconRankingBundle:Game');
         $entity = $repo->find($id);
@@ -147,7 +147,7 @@ class GameController extends Controller
                 ->remove('notfinished')
                 ->remove('score');
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('FauconClubBundle:User')->find($userid);
         $challenge = $em->getRepository('FauconRankingBundle:Challenge')->find($challengeid);
         $statuses = $this->get('match_status')->getMatchStatuses();
@@ -185,7 +185,7 @@ class GameController extends Controller
         $form->bindRequest($request);
         $score = json_decode($request->get('faucon_bundle_rankingbundle_gametype_score'));
         $matchstatus = $request->get('faucon_bundle_rankingbundle_gametype_notfinished');
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $scoreisvalid = $em->getRepository('FauconRankingBundle:Score')->isScoreValid($score);
 
         $challenge = $em->getRepository('FauconRankingBundle:Challenge')->find($challengeid);
@@ -241,7 +241,7 @@ class GameController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Game')->find($id);
 
@@ -268,7 +268,7 @@ class GameController extends Controller
      */
     public function updateAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Game')->find($id);
 
@@ -311,7 +311,7 @@ class GameController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FauconRankingBundle:Game')->find($id);
 
             if (!$entity) {

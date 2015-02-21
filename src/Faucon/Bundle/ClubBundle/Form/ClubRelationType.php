@@ -17,7 +17,7 @@ class ClubRelationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('club', new \Faucon\Bundle\ClubBundle\Form\ClubType())
+        $builder->add('club', new \Faucon\Bundle\ClubBundle\Form\ClubType(), array('data_class' => 'Faucon\Bundle\ClubBundle\Entity\Club'))
                 ->add('user', $this->container->get('faucon_user.create.form.type'));
     }
 

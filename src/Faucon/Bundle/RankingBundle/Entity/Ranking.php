@@ -28,7 +28,7 @@ class Ranking
     private $ranking;
 
     /**
-     * @ORM\Column(type="datetime", length="255")
+     * @ORM\Column(type="datetime", length=255)
      */
     private $created;
 
@@ -158,7 +158,7 @@ class Ranking
     }
     
     /**
-     * @ORM\prePersist
+     * @ORM\PrePersist
      */
     public function setCreatedValue()
     {

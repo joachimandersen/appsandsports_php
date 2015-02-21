@@ -36,7 +36,7 @@ class RankingController extends Controller
      */
     public function pagingAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $datatables = new DataTables($this->getRequest(), $em->getRepository('FauconRankingBundle:Ranking'), $this->container);
         return $this->render('FauconRankingBundle:Ranking:paging.json.twig', array('data' => $datatables->getJsonResult()));
     }
@@ -50,7 +50,7 @@ class RankingController extends Controller
      */
     public function categoryAction($clubid)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconRankingBundle:Category')->findAllInClub($clubid);
 
@@ -112,7 +112,7 @@ class RankingController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Ranking')->find($id);
 
@@ -139,7 +139,7 @@ class RankingController extends Controller
      */
     public function updateAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Ranking')->find($id);
 
@@ -194,7 +194,7 @@ class RankingController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FauconRankingBundle:Ranking')->find($id);
 
             if (!$entity) {

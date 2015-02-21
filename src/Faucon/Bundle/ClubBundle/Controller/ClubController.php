@@ -42,7 +42,7 @@ class ClubController extends Controller
      */
     public function pagingAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $datatables = new DataTables($this->getRequest(), $em->getRepository('FauconClubBundle:Club'), $this->container);
         return $this->render('FauconClubBundle:Club:paging.json.twig', array('data' => $datatables->getJsonResult()));
     }
@@ -55,7 +55,7 @@ class ClubController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $repo = $em->getRepository('FauconRankingBundle:Category');
         $entity = $em->getRepository('FauconClubBundle:Club')->find($id);
@@ -72,7 +72,7 @@ class ClubController extends Controller
     
     public function lastfiveAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconClubBundle:Club')->findLastFive();
 
@@ -130,7 +130,7 @@ class ClubController extends Controller
         $user->addRole('ROLE_CLUB_ADMIN');  
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $em->persist($clubrelation);

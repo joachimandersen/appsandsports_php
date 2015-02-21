@@ -29,8 +29,8 @@ class RegistrateUserFormType extends RegistrationFormType
         $builder->remove('plainPassword');
         $builder->add('plainPassword', 'repeated', array(
             'type' => 'password', 
-            'first_name' => $this->container->get('translator')->trans('profile.create.first.password'),
-            'second_name' => $this->container->get('translator')->trans('profile.create.second.password')
+            'first_options' => array('label' => 'profile.create.first.password'),
+            'second_options' => array('label' => 'profile.create.second.password')
             ));
         $builder->add('firstname', 'text', array(
             'label' =>

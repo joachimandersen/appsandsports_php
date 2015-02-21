@@ -21,11 +21,7 @@ class EditUserFormType extends ProfileFormType
     {
         parent::buildForm($builder, $options);
         $builder->remove('current');
-        $builder->add('current', 'password', 
-            array(
-                'label' => 
-                $this->container->get('translator')->trans('profile.edit.confirm.password')
-            ));
+        $builder->add('current', 'text', array('label' => 'profile.edit.confirm.password'));
     }
     
     public function buildUserForm(FormBuilderInterface $builder, array $options)

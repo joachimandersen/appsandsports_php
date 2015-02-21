@@ -26,14 +26,14 @@ class InvitationToken
     /**
      * @var string $token
      *
-     * @ORM\Column(name="token", type="string", length="255")
+     * @ORM\Column(name="token", type="string", length=255)
      */
     private $token;    
 
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length="400")
+     * @ORM\Column(name="email", type="string", length=400)
      */
     private $email;
 
@@ -45,14 +45,14 @@ class InvitationToken
     /**
      * @var datetime $created
      *
-     * @ORM\Column(name="used", type="datetime", nullable="true")
+     * @ORM\Column(name="used", type="datetime", nullable=true)
      */
     private $used;
 
     /**
      * @var datetime $sent
      *
-     * @ORM\Column(name="sent", type="datetime", nullable="true")
+     * @ORM\Column(name="sent", type="datetime", nullable=true)
      */
     private $sent;
 

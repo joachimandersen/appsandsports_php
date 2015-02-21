@@ -182,7 +182,7 @@ class GameController extends Controller
         $entity  = new Game();
         $request = $this->getRequest();
         $form    = $this->createForm(new GameType(), $entity);
-        $form->bindRequest($request);
+        $form->bind($this->getRequest());
         $score = json_decode($request->get('faucon_bundle_rankingbundle_gametype_score'));
         $matchstatus = $request->get('faucon_bundle_rankingbundle_gametype_notfinished');
         $em = $this->getDoctrine()->getManager();

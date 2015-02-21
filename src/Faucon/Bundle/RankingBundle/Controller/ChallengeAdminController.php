@@ -41,7 +41,7 @@ class ChallengeAdminController extends Controller
      */
     public function pagingAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $datatables = new DataTables($this->getRequest(), $em->getRepository('FauconRankingBundle:Challenge'), $this->container, array('filter' => 'onlyopen'));
         return $this->render('FauconRankingBundle:ChallengeAdmin:paging.json.twig', array('data' => $datatables->getJsonResult()));
     }
@@ -54,7 +54,7 @@ class ChallengeAdminController extends Controller
      */
     public function newAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = new Challenge();
         $form   = $this->createForm($this->container->get('challenge_type'), $entity)
                 ->remove('created')
@@ -84,7 +84,7 @@ class ChallengeAdminController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $ur = $em->getRepository('FauconClubBundle:User');
             $currentuser = $this->get('security.context')->getToken()->getUser();
             $entity->setCreatedby($currentuser);

@@ -1,12 +1,12 @@
 <div class="row">
     <div class="span6">
         <h2>5 sidste udfordringer</h2>
-        {% render 'FauconRankingBundle:Challenge:lastfiveincategory' with {'categoryid': category.id } %}
+        {% render controller('FauconRankingBundle:Challenge:lastfiveincategory', {'categoryid': category.id }) %}
         <p><a class="btn" href="{{ path('challenge') }}">Se alle &raquo;</a></p>
     </div>
     <div class="span6">
         <h2>5 sidste resultater</h2>
-        {% render 'FauconRankingBundle:Game:lastfiveincategory' with {'categoryid': category.id } %}
+        {% render controller('FauconRankingBundle:Game:lastfiveincategory', {'categoryid': category.id }) %}
         <p><a class="btn" href="{{ path('game') }}">Se alle &raquo;</a></p>
     </div>
 </div>

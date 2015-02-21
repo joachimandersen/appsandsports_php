@@ -155,7 +155,7 @@ class ChallengeController extends Controller
         $entity  = new Challenge();
         $request = $this->getRequest();
         $form    = $this->createForm($this->container->get('challenge_type'), $entity);
-        $form->bindRequest($request);
+        $form->bind($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();

@@ -25,8 +25,8 @@ assetic:
 # Swiftmailer Configuration
 swiftmailer:
     transport:  gmail
-    username:   joachimfandersen@gmail.com  
-    password:   xMh8r_4q
+    username:   %gmail_username%
+    password:   %gmail_password%
     host:       smtp.gmail.com
     port:       465
 

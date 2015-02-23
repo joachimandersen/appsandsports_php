@@ -37,14 +37,14 @@ class ChallengeController extends Controller
      */
     public function pagingAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $datatables = new DataTables($this->getRequest(), $em->getRepository('FauconRankingBundle:Challenge'), $this->container);
         return $this->render('FauconRankingBundle:Challenge:paging.json.twig', array('data' => $datatables->getJsonResult()));
     }
 
     public function lastfiveAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconRankingBundle:Challenge')->findLastFive();
 
@@ -54,7 +54,7 @@ class ChallengeController extends Controller
     
     public function lastfiveincategoryAction($categoryid)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconRankingBundle:Challenge')->findLastFiveInCategory($categoryid);
 

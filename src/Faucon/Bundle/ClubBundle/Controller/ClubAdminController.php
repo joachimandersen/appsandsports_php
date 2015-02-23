@@ -31,7 +31,7 @@ class ClubAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
             throw new AccessDeniedHttpException('Unauthorized access.');
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FauconClubBundle:Club')->findAll();
 
@@ -166,7 +166,7 @@ class ClubAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         //$user = $this->get('security.context')->getToken()->getUser();
         $club = $this->checkCredentialsAndReturnClub($id);
@@ -189,7 +189,7 @@ class ClubAdminController extends Controller
      */
     public function sendUnsentInvitesAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $itr = $em->getRepository('FauconClubBundle:InvitationToken');
         $itr->setContainer($this->container);
         $itr->sendInvites();
@@ -210,7 +210,7 @@ class ClubAdminController extends Controller
             throw new AccessDeniedHttpException('Unauthorized access.');
         }
         $user = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $clubrepository = $em->getRepository('FauconClubBundle:Club');
         $entity = $clubrepository->find($id);
 

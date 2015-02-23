@@ -57,7 +57,7 @@ class CategoryAdminController extends Controller
 
         if ($form->isValid()) {
             $user = $this->get('security.context')->getToken()->getUser();
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $entity->setCreatedby($user);
             $club = $em->getRepository('FauconClubBundle:Club')->find($id);
             $entity->setClub($club);
@@ -85,7 +85,7 @@ class CategoryAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Category')->find($id);
 
@@ -113,7 +113,7 @@ class CategoryAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Category')->find($id);
 
@@ -151,7 +151,7 @@ class CategoryAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Category')->find($id);
 
@@ -178,7 +178,7 @@ class CategoryAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconRankingBundle:Category')->find($id);
         if (!$entity) {

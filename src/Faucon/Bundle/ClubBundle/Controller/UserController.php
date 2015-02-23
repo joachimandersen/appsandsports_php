@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $categories = $em->getRepository('FauconRankingBundle:Category')->findAll();
         $data = array();
@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function showallAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconClubBundle:User')->find($id);
         $openchallenges = $em->getRepository('FauconRankingBundle:Challenge')->getChallengesByUser($entity);
@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function showAction($id, $categoryid)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FauconClubBundle:User')->find($id);
         $myself = $this->get('security.context')->getToken()->getUser() == $entity;

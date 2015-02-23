@@ -163,7 +163,7 @@ class SetScore
     }
 
     /**
-     * @ORM\prePersist
+     * @ORM\PrePersist
      */
     public function setCreatedValue()
     {

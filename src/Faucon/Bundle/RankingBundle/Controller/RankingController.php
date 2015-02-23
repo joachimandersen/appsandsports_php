@@ -81,7 +81,7 @@ class RankingController extends Controller
     
     private function rankingAction($categoryid)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $category = $em->getRepository('FauconRankingBundle:Category')->find($categoryid);
         $rr = $em->getRepository('FauconRankingBundle:Ranking');

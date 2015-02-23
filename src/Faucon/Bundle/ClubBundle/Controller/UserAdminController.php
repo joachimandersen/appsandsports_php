@@ -28,7 +28,7 @@ class UserAdminController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $user = $this->get('security.context')->getToken()->getUser();
         $clubrelations = $em
@@ -85,7 +85,7 @@ class UserAdminController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('FauconClubBundle:User')->find($id);
         if (!$this->canEdit($user)){
             throw new AccessDeniedException('Unauthorized access.');
@@ -121,7 +121,7 @@ class UserAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('FauconClubBundle:User')->find($id);
         $currentuser = $this->get('security.context')->getToken()->getUser();
 
@@ -153,7 +153,7 @@ class UserAdminController extends Controller
         if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new HttpException('Unauthorized access.', 401);
         }
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         try {
             $user = $em->getRepository('FauconClubBundle:User')->find($id);
@@ -201,7 +201,7 @@ class UserAdminController extends Controller
             throw new AccessDeniedException('Unauthorized access.');
         }
         $currentuser = $this->get('security.context')->getToken()->getUser();
-        return $this->getDoctrine()->getEntityManager()->getRepository('FauconClubBundle:Club')
+        return $this->getDoctrine()->getManager()->getRepository('FauconClubBundle:Club')
                 ->isUserInMyClub($user, $currentuser);
     }
 }

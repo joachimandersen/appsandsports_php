@@ -12,3 +12,4 @@
 /web/app_dev.php
 /web/bundles/
 /web/config.php
+*.sublime*

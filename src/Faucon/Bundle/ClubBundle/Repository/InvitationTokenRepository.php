@@ -61,7 +61,7 @@ class InvitationTokenRepository extends EntityRepository
         foreach($invitationTokens as $invitationToken) {
             $message = \Swift_Message::newInstance()
                 ->setSubject($translator->trans('invitation.email.subject'))
-                ->setFrom($this->container->getParameter('mailer_user'))
+                ->setFrom($this->container->getParameter('mailer_email'))
                 ->setTo($invitationToken->getEmail())
                 ->setBody(
                         $this->container->get('templating')->render(
